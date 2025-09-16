@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-dotenv
+crewai
+crewai-tools
+
+
+# requremnets download krne le liye apne terminal mein ye run kriyo "pip install -r requirements.txt"
+
+# uvicorn chatbot:app --reload
