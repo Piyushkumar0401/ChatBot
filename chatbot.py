@@ -41,7 +41,7 @@ def generate_tourism_place(prompt: str) -> str:
 
     agent_task = Task(
         description=f"""Take the following prompt and generate a list of various tourism places that match with user's input.
-        Use the latest data available on the internet to provide accurate information.
+        Use the latest data available on the internet to provide accurate information. also make sure that output return should look like as human made as possible 
         Ensure that the output is well structured and easy to read by the user. dont use any extra stars or hyphens.
         Prompt:
         '''{prompt}'''""",
