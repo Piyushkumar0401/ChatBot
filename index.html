@@ -1,201 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nomad AI</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: #0d111c;
-        color: #e6edf3;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-        padding: 20px;
-        transition: background-color 0.3s ease;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tourism AI Agent</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      color: #e6edf3;
+    }
 
-      .go-back-btn {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        width: 120px;
-        height: 45px;
-        margin: 30px;
-        border: none;
-        font-size: 15px;
-        font-weight: 500;
-        color: #000;
-        background-color: #e6f4ff;
-        border-radius: 20px;
-      }
-      .go-back-btn:hover {
-        background-color: #ffe066;
-      }
+    .container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
 
-      .main-container {
-        background-color: #161b22;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-        width: 95%;
-        max-width: 600px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        border: 1px solid #30363d;
-      }
+    /* Chat Section */
+    .chat-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background: #161b22;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+    }
 
-      h1 {
-        color: #58a6ff;
-        font-weight: 600;
-        font-size: 2.2em;
-        text-align: center;
-        margin-top: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-      }
+    h1 {
+      margin: 0 0 15px 0;
+      color: #58a6ff;
+    }
 
-      .input-group {
-        display: flex;
-        gap: 10px;
-        width: 100%;
-      }
+    .chat-box {
+      flex: 1;
+      background: #0d1117;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-y: auto;
+      border: 1px solid #30363d;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-      #user-query {
-        flex-grow: 1;
-        padding: 12px 15px;
-        font-size: 1em;
-        border-radius: 8px;
-        border: 1px solid #30363d;
-        background-color: #0d111c;
-        color: #e6edf3;
-        outline: none;
-        transition: border-color 0.3s ease;
-      }
+    /* Chat bubbles */
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      line-height: 1.4;
+      font-size: 15px;
+    }
 
-      #user-query::placeholder {
-        color: #768390;
-      }
+    .user {
+      align-self: flex-end;
+      background: #1f6feb;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
 
-      #user-query:focus {
-        border-color: #58a6ff;
-      }
+    .ai {
+      align-self: flex-start;
+      background: #21262d;
+      color: #c9d1d9;
+      border-bottom-left-radius: 0;
+    }
 
-      #submit-btn {
-        padding: 12px 20px;
-        font-size: 1em;
-        border-radius: 8px;
-        border: none;
-        background: linear-gradient(90deg, #0078ff, #00c6ff);
-        color: white;
-        cursor: pointer;
-        font-weight: 600;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
+    .input-area {
+      display: flex;
+      margin-top: 15px;
+    }
 
-      #submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 120, 255, 0.3);
-      }
+    input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px 0 0 8px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      color: #e6edf3;
+      outline: none;
+    }
 
-      #submit-btn:active {
-        transform: translateY(0);
-        box-shadow: none;
-      }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #238636;
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+    }
 
-      #result-area {
-        padding: 20px;
-        background-color: #0d111c;
-        border-radius: 10px;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        min-height: 100px;
-        overflow-y: auto;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        line-height: 1.6;
-        border: 1px solid #30363d;
-      }
+    button:hover {
+      background: #2ea043;
+    }
 
-      .status-text {
-        color: #9a9a9a;
-        font-style: italic;
-        animation: pulse 1.5s infinite;
-      }
+    /* Image Section */
+    .image-section {
+      flex: 0.6;
+      background: #0d1117;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border-left: 1px solid #30363d;
+    }
 
-      .error-text {
-        color: #ff6b6b;
-        font-weight: 600;
-      }
-
-
-    </style>
-  </head>
-  <body>
-    <button class="go-back-btn" onclick="history.back()">← Go Back</button>
-
-    <div class="main-container">
-      <h1><span style="font-size: 1.5em">✈️</span> Nomad AI </h1>
-
-      <div class="input-group">
-        <input
-          type="text"
-          id="user-query"
-          placeholder="Enter a place or query..."
-        />
-        <button id="submit-btn" onclick="fetchData()">Generate</button>
+    .image-section img {
+      max-width: 100%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.7);
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left Chat Section -->
+    <div class="chat-section">
+      <h1>🌍 Tourism AI Agent</h1>
+      <div class="chat-box" id="chatBox">
+        <div class="message ai">💬 Ask me about a place...</div>
       </div>
-
-      <div id="result-area">Result will appear here...</div>
+      <div class="input-area">
+        <input type="text" id="prompt" placeholder="Enter a place or query...">
+        <button onclick="getTourismPlaces()">Send</button>
+      </div>
     </div>
 
-    <script>
-      async function fetchData() {
-        const query = document.getElementById("user-query").value;
-        const resultArea = document.getElementById("result-area");
+    <!-- Right Image Section -->
+    <div class="image-section">
+      <img id="placeImage" src="https://via.placeholder.com/400x300/0d1117/ffffff?text=Place+Preview" alt="Place Preview">
+    </div>
+  </div>
 
-        resultArea.innerHTML = "⏳ Generating, please wait...";
-        resultArea.classList.add("status-text");
+  <script>
+    async function getTourismPlaces() {
+      const prompt = document.getElementById("prompt").value;
+      const chatBox = document.getElementById("chatBox");
+      const imageDiv = document.getElementById("placeImage");
 
-        try {
-          const response = await fetch(
-            "http://127.0.0.1:8000/generate-tourism",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ prompt: query }),
-            }
-          );
+      if (!prompt.trim()) return;
 
-          resultArea.classList.remove("status-text");
+      // Show user message
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.innerText = prompt;
+      chatBox.appendChild(userMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
 
-          if (!response.ok) {
-            throw new Error("API request failed: " + response.statusText);
-          }
+      // Show loading message
+      const aiMsg = document.createElement("div");
+      aiMsg.className = "message ai";
+      aiMsg.innerText = "⏳ Generating, please wait...";
+      chatBox.appendChild(aiMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
 
-          const data = await response.json();
-          resultArea.innerHTML = data.places;
-        } catch (error) {
-          resultArea.classList.remove("status-text");
-          resultArea.classList.add("error-text");
-          resultArea.innerHTML = "❌ Error: " + error.message;
+      try {
+        const response = await fetch("http://127.0.0.1:8000/generate-tourism", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ prompt })
+        });
+
+        if (!response.ok) {
+          throw new Error("API request failed: " + response.statusText);
         }
+
+        const data = await response.json();
+
+        // Replace loading text with AI response
+        aiMsg.innerText = data.places;
+
+        // Show image of place
+        imageDiv.src = https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)},travel;
+      } catch (error) {
+        aiMsg.innerText = "❌ Error: " + error.message;
       }
-    </script>
-  </body>
+
+      // Clear input box
+      document.getElementById("prompt").value = "";
+    }
+  </script>
+</body>
 </html>
