@@ -103,21 +103,29 @@
 
     /* Image Section */
     .image-section {
-      flex: 0.6;
+      flex: 0.7;
       background: #0d1117;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       padding: 20px;
       border-left: 1px solid #30363d;
+      overflow-y: auto;
     }
 
-    .image-section img {
-      max-width: 100%;
-      max-height: 90%;
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      width: 100%;
+    }
+
+    .image-grid img {
+      width: 100%;
+      height: 180px;
       border-radius: 12px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.7);
       object-fit: cover;
+      background: #161b22;
     }
   </style>
 </head>
@@ -125,7 +133,7 @@
   <div class="container">
     <!-- Left Chat Section -->
     <div class="chat-section">
-      <h1>🌍 Tourism AI Agent</h1>
+      <h1> Nomad AI Agent 🌍</h1>
       <div class="chat-box" id="chatBox">
         <div class="message ai">💬 Ask me about a place...</div>
       </div>
@@ -137,7 +145,9 @@
 
     <!-- Right Image Section -->
     <div class="image-section">
-      <img id="placeImage" src="https://via.placeholder.com/400x300/0d1117/ffffff?text=Place+Preview" alt="Place Preview">
+      <div class="image-grid" id="imageGrid">
+        <img src="https://via.placeholder.com/300x200/222/fff?text=Place+Preview" alt="Preview">
+      </div>
     </div>
   </div>
 
@@ -145,18 +155,18 @@
     async function getTourismPlaces() {
       const prompt = document.getElementById("prompt").value;
       const chatBox = document.getElementById("chatBox");
-      const imageDiv = document.getElementById("placeImage");
+      const imageGrid = document.getElementById("imageGrid");
 
       if (!prompt.trim()) return;
 
-      // Show user message
+      // User message
       const userMsg = document.createElement("div");
       userMsg.className = "message user";
       userMsg.innerText = prompt;
       chatBox.appendChild(userMsg);
       chatBox.scrollTop = chatBox.scrollHeight;
 
-      // Show loading message
+      // AI "loading..."
       const aiMsg = document.createElement("div");
       aiMsg.className = "message ai";
       aiMsg.innerText = "⏳ Generating, please wait...";
@@ -166,9 +176,7 @@
       try {
         const response = await fetch("http://127.0.0.1:8000/generate-tourism", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt })
         });
 
@@ -178,16 +186,26 @@
 
         const data = await response.json();
 
-        // Replace loading text with AI response
+        // AI reply
         aiMsg.innerText = data.places;
 
-        // Show image of place
-        imageDiv.src = https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)},travel;
+        // Show multiple images (Unsplash random set)
+        imageGrid.innerHTML = ""; // Clear old images
+        for (let i = 0; i < 4; i++) {
+          const img = document.createElement("img");
+          img.src = https://source.unsplash.com/400x300/?${encodeURIComponent(prompt)}&sig=${i};
+          img.onerror = () => {
+            img.src = "https://via.placeholder.com/400x300/222/fff?text=No+Image";
+          };
+          imageGrid.appendChild(img);
+        }
+
       } catch (error) {
         aiMsg.innerText = "❌ Error: " + error.message;
+        imageGrid.innerHTML = '<img src="https://via.placeholder.com/400x300/222/fff?text=Image+Error">';
       }
 
-      // Clear input box
+      // Clear input
       document.getElementById("prompt").value = "";
     }
   </script>
